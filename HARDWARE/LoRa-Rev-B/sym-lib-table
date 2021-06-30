@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name LoRa_RevB)(type Legacy)(uri ${KIPRJMOD}/LoRa_RevB.lib)(options "")(descr ""))
+  (lib (name LoRa_RevB-rescue)(type Legacy)(uri ${KIPRJMOD}/LoRa_RevB-rescue.lib)(options "")(descr ""))
+)
