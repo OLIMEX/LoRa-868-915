@@ -1,5 +1,6 @@
 EESchema Schematic File Version 4
-EELAYER 30 0
+LIBS:LoRa_RevB-cache
+EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -909,18 +910,10 @@ Wire Wire Line
 	5500 3000 5500 3150
 Wire Wire Line
 	4600 3150 5500 3150
-Wire Bus Line
-	2300 2450 2300 4900
-Wire Bus Line
-	4300 4900 4300 6500
-Wire Bus Line
-	2300 4900 4300 4900
-Wire Bus Line
-	4650 4900 4650 6600
 Text Notes 5900 6700 0    59   ~ 0
 16\n15\n14\n13\n12\n11\n10\n9
 Text Notes 2400 6700 0    59   ~ 0
-1\n2\n3\n4\n5\n6\n7\n8
+8\n7\n6\n5\n4\n3\n2\n1
 $Bitmap
 Pos 9950 6850
 Scale 1.000000
@@ -1577,4 +1570,12 @@ F1 54 95 14 9F EF 69 AF 2F E5 68 0C 80 4D C9 83 B8 C7 32 D7 FA 45 6F 95 BF E8 F3
 A0 10 71 07 00 85 88 3B 00 28 F4 2F 6E 0E 73 66 69 F5 31 42 00 00 00 00 49 45 4E 44 AE 42 60 82 
 EndData
 $EndBitmap
+Wire Bus Line
+	2300 2450 2300 4900
+Wire Bus Line
+	4300 4900 4300 6500
+Wire Bus Line
+	2300 4900 4300 4900
+Wire Bus Line
+	4650 4900 4650 6600
 $EndSCHEMATC
