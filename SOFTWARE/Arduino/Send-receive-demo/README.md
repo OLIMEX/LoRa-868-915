@@ -14,11 +14,11 @@ Required hardware:
 
 - Two (2) ESP32-EVB boards
 
-- Two (2) microUSB cables
+- Two (2) micro USB cables
 
-Remember LoRa modules would NOT work without external antenna!
+Remember LoRa modules would NOT work without an external antenna!
 
-Required Software:
+Required software:
 
 - Arduino IDE, get it from here:
 
