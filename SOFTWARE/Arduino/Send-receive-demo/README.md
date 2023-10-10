@@ -41,9 +41,9 @@ the other with - LoRaReceiver.ino.
 
 Connect both boards to free USB ports.
 
-Open serial terminal software (like PuTTY) on each board's virtual COM port. Baud is 9600.
+Open serial terminal software (like PuTTY) on each board's virtual COM port. Baud is 115200.
 
-One board sends hello packets in a 5 second interval. 
+One board sends hello packets in a 1 second interval. 
 
 The other receives packets "hello #number" and reports signal strength.
 
