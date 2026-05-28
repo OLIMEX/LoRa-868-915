@@ -1,0 +1,116 @@
+# MOD-LORA915 + ChirpStack Demo Guide
+
+## Overview
+
+This guide demonstrates a complete LoRaWAN uplink/downlink test using an **Olimex MOD-LORA915** node and a **ChirpStack** network server running on a **Raspberry Pi 5** with an **LR1302 Gateway HAT (915 MHz)**.
+
+The gateway image comes pre-configured with ChirpStack, a device profile (LoRaWAN 1.0.4, ABP, Class A, US915), and matching ABP keys — so you can focus on the node side and start testing right away.
+
+## Hardware Required
+
+**Gateway side:**
+- Raspberry Pi 5
+- LR1302 LoRa Gateway HAT (915 MHz) — with its 915 MHz antenna
+- MicroSD card (8 GB or larger)
+- Ethernet cable (for network access)
+
+**Node side:**
+- ESP32-C6-DevKit-LiPo
+- MOD-LORA915 (plugged into the UEXT connector)
+- 915 MHz antenna for MOD-LORA915
+- USB-C cable
+
+> **⚠️ Important:** Always attach the 915 MHz antenna to MOD-LORA915 before powering on. Transmitting without an antenna can damage the RF stage.
+
+## Gateway Setup
+
+1. Download `rpi_chirpstack_lora_915_example.zip` and extract the image file.
+2. Write the image to a MicroSD card using for example [balenaEtcher](https://etcher.balena.io/).
+3. Mount the LR1302 Gateway HAT on the Raspberry Pi 5 and connect its 915 MHz antenna.
+4. Insert the MicroSD card and connect the Pi to your local network via Ethernet.
+5. Power on the Raspberry Pi and wait about a minute for all services to start.
+
+**Accessing the gateway:**
+
+- **SSH:** `ssh olimex@olimexpi.local` (password: `olimex`)
+- **ChirpStack Web UI:** open [http://olimexpi.local:8080/](http://olimexpi.local:8080/) in a browser (login: `admin` / `admin`)
+
+The image comes with the gateway, device profile, and a test device already configured — no additional ChirpStack setup is needed.
+
+## Node Firmware Setup
+
+### Requirements
+
+- Arduino IDE 2.3.7 (or compatible)
+- ESP32 board package installed (with ESP32-C6 support)
+- [RadioLib](https://github.com/jgromes/RadioLib) library v7.5.0
+
+### Board Settings
+
+In Arduino IDE, select:
+
+- **Board:** ESP32C6 Dev Module
+- **USB CDC On Boot:** Disabled
+- All other settings can remain at their defaults.
+
+### Upload
+
+1. Plug MOD-LORA915 into the UEXT connector on the ESP32-C6-DevKit-LiPo.
+2. Attach a 915 MHz antenna to MOD-LORA915.
+3. Connect the board to your PC via the USB-C port labeled **USB-UART1** — this is also where the Serial Monitor output will appear.
+4. Open the sketch in Arduino IDE, compile and upload.
+5. Open Serial Monitor at **115200 baud**.
+
+## Running the Test
+
+After upload you should see:
+
+```
+START
+Initializing radio... OK
+
+╔════════════════════════════════════════╗
+║      MOD-LORA915 Test v1.1             ║
+╚════════════════════════════════════════╝
+  Mode: ABP (no Join)
+  NVS persistence: ENABLED
+  Press ENTER or button to run test
+  Type 'R' + ENTER to reset session
+```
+
+Press **ENTER** in the Serial Monitor (or press the button on the board) to send a confirmed uplink. A successful round-trip looks like this:
+
+```
+========================================
+  TEST #1
+========================================
+Sending confirmed uplink... OK
+ACK received in RX window: 2
+RSSI: -62.00 dBm
+SNR:  8.50 dB
+========================================
+
+  ✅ ✅ ✅  SUCCESS  ✅ ✅ ✅
+  Board passed the test!
+  UPLINK:   OK
+  DOWNLINK: OK (ACK received)
+
+========================================
+```
+
+You can repeat the test as many times as needed. The frame counter is saved in NVS and persists across reboots.
+
+**Resetting the session:** if the frame counter gets out of sync with ChirpStack (e.g. after re-flashing the device in ChirpStack), type `R` + ENTER in the Serial Monitor to clear the saved session, then restart the board.
+
+## Verifying in ChirpStack
+
+Open [http://olimexpi.local:8080/](http://olimexpi.local:8080/) and navigate to the pre-configured device. Under the **Events** tab you should see the incoming uplinks with the `TEST` payload and the corresponding downlink ACKs.
+
+## Troubleshooting
+
+| Symptom | Possible Cause |
+|---|---|
+| `CRITICAL ERROR: Radio failed to initialize!` | MOD-LORA915 not seated properly in UEXT connector; check SPI wiring |
+| `Waiting for ACK... TIMEOUT` | Gateway not running or out of range; check antenna connections on both sides; verify ChirpStack is active (`ssh` in and run `sudo docker ps`) |
+| Frame counter errors in ChirpStack | Session out of sync — type `R` + ENTER to reset, then restart the board |
+| `olimexpi.local` not resolving | Connect via IP instead; check that the Pi is on the same network |
