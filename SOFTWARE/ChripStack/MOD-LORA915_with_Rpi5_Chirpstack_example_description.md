@@ -1,32 +1,32 @@
-# MOD-LORA868 + ChirpStack Demo Guide
+# MOD-LORA915 + ChirpStack Demo Guide
 
 ## Overview
 
-This guide demonstrates a complete LoRaWAN uplink/downlink test using an **Olimex MOD-LORA868** node and a **ChirpStack** network server running on a **Raspberry Pi 5** with an **LR1302 Gateway HAT (868 MHz)**.
+This guide demonstrates a complete LoRaWAN uplink/downlink test using an **Olimex MOD-LORA915** node and a **ChirpStack** network server running on a **Raspberry Pi 5** with an **LR1302 Gateway HAT (915 MHz)**.
 
-The gateway image comes pre-configured with ChirpStack, a device profile (LoRaWAN 1.1.0, ABP, Class A, EU868, RP002-1.0.5), and matching ABP keys — so you can focus on the node side and start testing right away.
+The gateway image comes pre-configured with ChirpStack, a device profile (LoRaWAN 1.0.4, ABP, Class A, US915), and matching ABP keys — so you can focus on the node side and start testing right away.
 
 ## Hardware Required
 
 **Gateway side:**
 - Raspberry Pi 5
-- LR1302 LoRa Gateway HAT (868 MHz) — with its 868 MHz antenna
+- LR1302 LoRa Gateway HAT (915 MHz) — with its 915 MHz antenna
 - MicroSD card (8 GB or larger)
 - Ethernet cable (for network access)
 
 **Node side:**
 - ESP32-C6-DevKit-LiPo
-- MOD-LORA868 (plugged into the UEXT connector)
-- 868 MHz antenna for MOD-LORA868
+- MOD-LORA915 (plugged into the UEXT connector)
+- 915 MHz antenna for MOD-LORA915
 - USB-C cable
 
-> **⚠️ Important:** Always attach the 868 MHz antenna to MOD-LORA868 before powering on. Transmitting without an antenna can damage the RF stage.
+> **⚠️ Important:** Always attach the 915 MHz antenna to MOD-LORA915 before powering on. Transmitting without an antenna can damage the RF stage.
 
 ## Gateway Setup
 
-1. Download `rpi_chirpstack_lora_868_example.zip` and extract the image file.
-2. Write the image to a MicroSD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or [balenaEtcher](https://etcher.balena.io/).
-3. Mount the LR1302 Gateway HAT on the Raspberry Pi 5 and connect its 868 MHz antenna.
+1. Download `rpi_chirpstack_lora_915_example.zip` from here: https://ftp.olimex.com/LoRa/rpi_chirpstack_lora_915_example.zip and extract the image file.
+2. Write the image to a MicroSD card using for example [balenaEtcher](https://etcher.balena.io/).
+3. Mount the LR1302 Gateway HAT on the Raspberry Pi 5 and connect its 915 MHz antenna.
 4. Insert the MicroSD card and connect the Pi to your local network via Ethernet.
 5. Power on the Raspberry Pi and wait about a minute for all services to start.
 
@@ -55,8 +55,8 @@ In Arduino IDE, select:
 
 ### Upload
 
-1. Plug MOD-LORA868 into the UEXT connector on the ESP32-C6-DevKit-LiPo.
-2. Attach a 868 MHz antenna to MOD-LORA868.
+1. Plug MOD-LORA915 into the UEXT connector on the ESP32-C6-DevKit-LiPo.
+2. Attach a 915 MHz antenna to MOD-LORA915.
 3. Connect the board to your PC via the USB-C port labeled **USB-UART1** — this is also where the Serial Monitor output will appear.
 4. Open the sketch in Arduino IDE, compile and upload.
 5. Open Serial Monitor at **115200 baud**.
@@ -70,7 +70,7 @@ START
 Initializing radio... OK
 
 ╔════════════════════════════════════════╗
-║      MOD-LORA868 Test v1.2             ║
+║      MOD-LORA915 Test v1.1             ║
 ╚════════════════════════════════════════╝
   Mode: ABP (no Join)
   NVS persistence: ENABLED
@@ -85,9 +85,9 @@ Press **ENTER** in the Serial Monitor (or press the button on the board) to send
   TEST #1
 ========================================
 Sending confirmed uplink... OK
-ACK received in RX window: 1
-RSSI: -55.00 dBm
-SNR:  9.25 dB
+ACK received in RX window: 2
+RSSI: -62.00 dBm
+SNR:  8.50 dB
 ========================================
 
   ✅ ✅ ✅  SUCCESS  ✅ ✅ ✅
@@ -110,7 +110,7 @@ Open [http://olimexpi.local:8080/](http://olimexpi.local:8080/) and navigate to 
 
 | Symptom | Possible Cause |
 |---|---|
-| `CRITICAL ERROR: Radio failed to initialize!` | MOD-LORA868 not seated properly in UEXT connector; check SPI wiring |
+| `CRITICAL ERROR: Radio failed to initialize!` | MOD-LORA915 not seated properly in UEXT connector; check SPI wiring |
 | `Waiting for ACK... TIMEOUT` | Gateway not running or out of range; check antenna connections on both sides; verify ChirpStack is active (`ssh` in and run `sudo docker ps`) |
 | Frame counter errors in ChirpStack | Session out of sync — type `R` + ENTER to reset, then restart the board |
 | `olimexpi.local` not resolving | Connect via IP instead; check that the Pi is on the same network |
